@@ -8,11 +8,17 @@ const GlobalStyle = createGlobalStyle`
 
 #root {
 	height: 100vh;
-	overflow: hidden;
+
+}
+
+@media (max-height:600px) {
+	#root {
+		height: auto;
+	}
 }
 
 body {
-	font-family: 'Roboto', sans-serif;
+	font-family: sans-serif;
 	background: #fff;
 }
 

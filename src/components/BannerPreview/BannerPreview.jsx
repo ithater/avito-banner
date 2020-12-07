@@ -1,56 +1,93 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect } from 'react';
 
 import styled from 'styled-components';
 
 function BannerPreview(props) {
-	const { form, setBannerHTML } = props;
-
-	const bannerRef = useRef(null);
-
-	useEffect(() => {
-		const bannerHTML = bannerRef.current.outerHTML;
-		console.log('bannerHTML: ', bannerHTML);
-		setBannerHTML(bannerHTML);
-	});
+	const {
+		formValue: {
+			bannerLink,
+			bannerWidth,
+			bannerHeight,
+			bannerBorderRadius,
+			bannerBackgroundColor,
+			bannerText,
+			bannerTextColor,
+			bannerTextWordBreak,
+			bannerTextFontSize,
+			bannerTextLineHeight,
+			bannerTextLetterSpacing,
+			bannerTextTop,
+			bannerTextLeft,
+			bannerTextPaddingLeft,
+			bannerTextPaddingTop,
+			bannerTextPaddingRight,
+			bannerImageString,
+			bannerImageTop,
+			bannerImageLeft,
+			bannerImageWidth,
+			bannerImageHeight,
+			bannerImageWidthAuto,
+			bannerImageHeightAuto,
+		},
+		bannerRef,
+		setBannerHTML,
+	} = props;
 
 	const bannerStyles = {
+		width: bannerWidth + 'px',
+		height: bannerHeight + 'px',
+		borderRadius: bannerBorderRadius + 'px',
+		backgroundColor: bannerBackgroundColor,
+
 		position: 'relative',
 		display: 'inline-block',
-		width: form['banner-width'] + 'px',
-		height: form['banner-height'] + 'px',
-		borderRadius: form['banner-border-radius'] + 'px',
-		backgroundColor: form['banner-background-color'],
 		overflow: 'hidden',
+	};
+
+	const imageStyles = {
+		top: bannerImageTop + 'px',
+		left: bannerImageLeft + 'px',
+		width: bannerImageWidthAuto ? 'auto' : bannerImageWidth + 'px',
+		height: bannerImageHeightAuto ? 'auto' : bannerImageHeight + 'px',
+		position: 'absolute',
+		zIndex: '5',
 	};
 
 	const textStyles = {
+		top: bannerTextTop + 'px',
+		left: bannerTextLeft + 'px',
+		letterSpacing: bannerTextLetterSpacing + 'px',
+		color: bannerTextColor,
+		fontSize: bannerTextFontSize + 'px',
+		lineHeight: bannerTextLineHeight + 'px',
+		maxHeight: bannerTextLineHeight * 3 + 'px',
+		paddingLeft: bannerTextPaddingLeft + 'px',
+		paddingTop: bannerTextPaddingTop + 'px',
+		paddingRight: bannerTextPaddingRight + 'px',
+		wordBreak: bannerTextWordBreak ? 'break-all' : 'normal',
 		position: 'absolute',
-		top: 'block',
-		width: form['banner-text-width'] + 'px',
-		height: form['banner-text-height'] + 'px',
-		color: 'white',
+		zIndex: '10',
+		width: '100%',
 		margin: '0',
-		fontSize: form['banner-text-font-size'] + 'px',
-		lineHeight: form['banner-text-line-height'] + 'px',
-		maxHeight: form['banner-text-line-height'] * 3 + 'px',
-		display: '-webkit-box',
+		color: 'white',
 		overflow: 'hidden',
-		textOverflow: 'ellipsis',
-		WebkitBoxOrient: 'vertical',
-		WebkitLineClamp: '3',
+		fontFamily: 'sans-serif',
 	};
 
-	const text = form['banner-text'];
+	useEffect(() => setBannerHTML(bannerRef.current.outerHTML));
 
 	return (
 		<BannerPreview_>
 			<a
-				href={form['banner-link']}
+				href={bannerLink}
 				style={bannerStyles}
 				onClick={evt => evt.preventDefault()}
 				ref={bannerRef}
 			>
-				{text && <p style={textStyles}>{text}</p>}
+				<p style={textStyles}>{bannerText}</p>
+				{bannerImageString && (
+					<img src={bannerImageString} style={imageStyles} />
+				)}
 			</a>
 		</BannerPreview_>
 	);
@@ -63,6 +100,11 @@ const BannerPreview_ = styled.div`
 	grid-row: 1 / 2;
 	border-radius: 8px;
 	background: #d3d3d3;
+
+	@media (max-width: 1200px) {
+		height: 500px;
+		margin-bottom: 50px;
+	}
 `;
 
 export default BannerPreview;

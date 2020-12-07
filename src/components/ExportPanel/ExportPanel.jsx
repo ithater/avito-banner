@@ -1,14 +1,15 @@
 import React, { useState } from 'react';
-
 import styled from 'styled-components';
 
 import { CopyToClipboard } from 'react-copy-to-clipboard';
+import html2canvas from 'html2canvas';
+import { saveAs } from 'file-saver';
+
 
 function ExportPanel(props) {
-	const { bannerHTML, form } = props;
+	const { bannerRef, formValue, bannerHTML } = props;
 
 	const [isExportedHTML, setIsExportedHTML] = useState(false);
-	const [isExportedPNG, setIsExportedPNG] = useState(false);
 	const [isExportedJSON, setIsExportedJSON] = useState(false);
 
 	const onCopy = set => {
@@ -16,13 +17,23 @@ function ExportPanel(props) {
 		setTimeout(set, 800, false);
 	};
 
-	const exportPNG = () => {};
-
+	const exportPNG = node =>
+		html2canvas(node, {
+			allowTaint: true,
+			useCORS: true,
+			backgroundColor: 'rgba(0,0,0,0)',
+			removeContainer: true,
+		})
+			.then(canvas => {
+				const base64image = canvas.toDataURL('image/png');
+				saveAs(base64image, 'banner.png');
+			})
+			.catch(err => console.error(err));
+	
 	return (
 		<ExportPanel_>
-			<ExportButton onClick={}>
+			<ExportButton onClick={() => exportPNG(bannerRef.current)}>
 				Экспорт PNG
-				{isExportedPNG && <CopiedNotification>Скопировано</CopiedNotification>}
 			</ExportButton>
 
 			<CopyToClipboard
@@ -39,7 +50,7 @@ function ExportPanel(props) {
 
 			<CopyToClipboard
 				onCopy={() => onCopy(setIsExportedJSON)}
-				text={JSON.stringify(form)}
+				text={JSON.stringify(formValue)}
 			>
 				<ExportButton>
 					Экспорт JSON
@@ -57,6 +68,10 @@ const ExportPanel_ = styled.div`
 	justify-content: space-between;
 	border-radius: 8px;
 	grid-row: 2 / 3;
+
+	@media (max-width: 600px) {
+		flex-direction: column;
+	}
 `;
 
 const ExportButton = styled.button`
@@ -78,6 +93,13 @@ const ExportButton = styled.button`
 		transition: 0.3s;
 		&:hover {
 			background-color: #256199;
+		}
+	}
+
+	@media (max-width: 600px) {
+		padding: 12px;
+		&:not(:last-child) {
+			margin-bottom: 10px;
 		}
 	}
 `;

@@ -1,30 +1,16 @@
 import React from 'react';
-
 import styled from 'styled-components';
-
-import Holder from '@components/FormElements/Holder';
-import Label from '@components/FormElements/Label';
+import { Holder, Label } from '@components/FormElements/FormElements';
 
 const TextArea = props => {
-	const { name, className, labelText, form, setForm } = props;
+	const { id, state, setState, labelText } = props;
 
-	const onChange = evt => {
-		const target = evt.target;
-		const inputData = {};
-		inputData[target.name] = target.value;
-		setForm({ ...form, ...inputData });
-	};
+	const onChange = evt => setState(evt.target.value);
 
 	return (
 		<Holder>
-			<Label htmlFor={name}>{labelText}</Label>
-			<TextArea_
-				id={name}
-				name={name}
-				className={className}
-				onChange={onChange}
-				value={form['banner-text']}
-			/>
+			<Label htmlFor={id}>{labelText}</Label>
+			<TextArea_ id={id} value={state} onChange={onChange} />
 		</Holder>
 	);
 };

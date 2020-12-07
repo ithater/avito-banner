@@ -1,50 +1,42 @@
-import React, { useState } from 'react';
-import styled, { css } from 'styled-components';
+import React from 'react';
+import styled from 'styled-components';
 
-import Holder from '@components/FormElements/Holder';
+import { Holder } from '@components/FormElements/FormElements';
 
 import uploadIcon from '@/assets/image/upload__icon__img.svg';
 
 const InputFile = props => {
-	const { name, form, setForm, labelText } = props;
-
-	const [fileName, setFileName] = useState(null);
+	const { id, setState, labelText } = props;
 
 	const onChange = evt => {
 		const target = evt.target;
 		const inputData = target.files[0];
-		setFileName(inputData.name);
-		console.log(5);
-
+		if (!inputData.type.startsWith('image')) return;
+		
+		const reader = new FileReader();
+    reader.readAsDataURL(inputData);
+    reader.onload = () => setState(reader.result);
+    reader.onerror = error => console.error(error);
 	};
 
-
 	return (
-		<Holder className="control-panel__input-holder">
-			<FileLabel htmlFor={name}>
-				{
-					fileName ? (
-						<LabelText single>{fileName}</LabelText>
-					) : (
-						<>
-							<LabelText>{labelText}</LabelText>
-							<UploadIcon src={uploadIcon} />
-						</>
-					)
-				}
+		<Holder>
+			<FileLabel htmlFor={id}>
+				<LabelText>{labelText}</LabelText>
+				<UploadIcon src={uploadIcon} />
 			</FileLabel>
-			<Input name={name} id={name} onChange={onChange} type="file" />
+			<Input id={id} onChange={onChange} />
 		</Holder>
 	);
 };
 
-const Input = styled.input`
+const Input = styled.input.attrs({ type: 'file' })`
 	display: none;
 `;
 
 const FileLabel = styled.label`
 	display: flex;
-	justify-content: space-between;
+	justify-content: space-around;
 	max-width: 100%;
 	align-items: center;
 	padding: 10px 15px;
@@ -52,24 +44,15 @@ const FileLabel = styled.label`
 	background-color: rgba(71, 142, 204, 1);
 	border-radius: 4px;
 	overflow: hidden;
-	min-height: 0;
 `;
 
 const LabelText = styled.span`
 	display: block;
-	max-width: 144px;
 	font-size: 18px;
 	line-height: 24px;
 	color: #ffffff;
 	text-transform: uppercase;
 	text-align: center;
-
-	${props => props.single && css`
-    max-width: 100%;
-		text-overflow: ellipsis;
-		overflow: hidden;
-		white-space: nowrap;
-  `}
 `;
 
 const UploadIcon = styled.img`

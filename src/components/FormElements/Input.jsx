@@ -1,36 +1,61 @@
-import React from 'react';
-
-import styled from 'styled-components';
-
-import Holder from '@components/FormElements/Holder';
-import Label from '@components/FormElements/Label';
+import React, { useState } from 'react';
+import styled, { css } from 'styled-components';
 
 const Input = props => {
-	const { name, labelText, form, setForm, type } = props;
+	const { id, state, setState, type, validate, deleteText } = props;
+
+	let validationState, setValidationState;
+
+	if (validate) {
+		[validationState, setValidationState] = useState('');
+	}
 
 	const onChange = evt => {
-		const target = evt.target;
-		const inputData = {};
-		inputData[target.name] = target.value;
-		setForm({ ...form, ...inputData });
+		if (validate) validate(evt, setValidationState);
+		setState(evt.target.value);
+	};
+
+	const onDelete = () => {
+		setState('');
 	};
 
 	return (
-		<Holder>
-			<Label htmlFor={name}>
-				{labelText}
-			</Label>
+		<Wrapper>
 			<Input_
-				id={name}
-				name={name}
-				onChange={onChange}
-				value={form[name]}
+				isValid={validationState}
 				type={type}
+				id={id}
+				value={state}
+				onChange={onChange}
+				disabled={state.length >= 2000}
 			/>
-		</Holder>
+
+			{deleteText && state && <DeleteText onClick={onDelete}>удалить</DeleteText>}
+		</Wrapper>
 	);
 };
 
+const Wrapper = styled.span`
+	position: relative;
+	display: block;
+`;
+
+const DeleteText = styled.button.attrs({ type: 'button' })`
+	position: absolute;
+	display: block;
+	top: 50%;
+	right: 4px;
+	transform: translateY(-50%);
+	padding: 4px;
+	border-radius: 4px;
+	font-size: 12px;
+	letter-spacing: 0.5px;
+	text-transform: uppercase;
+	outline: none;
+	border: none;
+	color: #ffffff;
+	background-color: #f54444;
+`;
 
 const Input_ = styled.input`
 	width: 100%;
@@ -49,9 +74,28 @@ const Input_ = styled.input`
 
 	${props => {
 		if (props.type === 'color')
-			return `
+			return css`
 				padding: 0px 2px;
 				height: 30px;
+			`;
+	}}
+
+	${props => {
+		if (props.isValid === 'invalid')
+			return css`
+				box-shadow: 0 0 0 1px rgba(255, 50, 0, 0.8);
+				&:focus {
+					box-shadow: 0 0 0 1px rgba(255, 50, 0, 0.8);
+					border: 1px solid rgba(255, 50, 0, 0.8);
+				}
+			`;
+		else if (props.isValid === 'valid')
+			return css`
+				box-shadow: 0 0 0 1px rgba(0, 255, 0, 0.8);
+				&:focus {
+					box-shadow: 0 0 0 1px rgba(0, 255, 0, 0.8);
+					border: 1px solid rgba(0, 255, 0, 0.8);
+				}
 			`;
 	}}
 `;

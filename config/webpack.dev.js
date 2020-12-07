@@ -22,6 +22,7 @@ module.exports = merge(base, {
 
 	// Spin up a server for quick development
 	devServer: {
+		
 		open: true,
 		compress: true,
 		hot: true,
