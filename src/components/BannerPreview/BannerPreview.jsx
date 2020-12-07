@@ -100,8 +100,10 @@ const BannerPreview_ = styled.div`
 	grid-row: 1 / 2;
 	border-radius: 8px;
 	background: #d3d3d3;
+	overflow: auto;
+	padding: 50px;
 
-	@media (max-width: 1200px) {
+	@media (max-width: 960px) {
 		height: 500px;
 		margin-bottom: 50px;
 	}

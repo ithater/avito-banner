@@ -5,7 +5,6 @@ import { CopyToClipboard } from 'react-copy-to-clipboard';
 import html2canvas from 'html2canvas';
 import { saveAs } from 'file-saver';
 
-
 function ExportPanel(props) {
 	const { bannerRef, formValue, bannerHTML } = props;
 
@@ -29,11 +28,11 @@ function ExportPanel(props) {
 				saveAs(base64image, 'banner.png');
 			})
 			.catch(err => console.error(err));
-	
+
 	return (
 		<ExportPanel_>
 			<ExportButton onClick={() => exportPNG(bannerRef.current)}>
-				Экспорт PNG
+				Экспорт как PNG
 			</ExportButton>
 
 			<CopyToClipboard
@@ -41,7 +40,7 @@ function ExportPanel(props) {
 				text={bannerHTML}
 			>
 				<ExportButton>
-					Экспорт HTML
+					Экспорт как HTML
 					{isExportedHTML && (
 						<CopiedNotification>Скопировано</CopiedNotification>
 					)}
@@ -53,7 +52,7 @@ function ExportPanel(props) {
 				text={JSON.stringify(formValue)}
 			>
 				<ExportButton>
-					Экспорт JSON
+					Экспорт конфигурации
 					{isExportedJSON && (
 						<CopiedNotification>Скопировано</CopiedNotification>
 					)}
@@ -89,6 +88,10 @@ const ExportButton = styled.button`
 	border-radius: 8px;
 	background-color: #478ecc;
 
+	&:not(:last-child) {
+		margin-right: 15px;
+	}
+
 	@media (hover: hover) and (pointer: fine) {
 		transition: 0.3s;
 		&:hover {
@@ -100,6 +103,7 @@ const ExportButton = styled.button`
 		padding: 12px;
 		&:not(:last-child) {
 			margin-bottom: 10px;
+			margin-right: 0;
 		}
 	}
 `;

@@ -51,13 +51,14 @@ const Wrapper = styled.div`
 
 	@media (max-width: 1200px) {
 		max-width: 900px;
-
+		grid-template-rows: 1fr 100px;
 	}
 
 	@media (max-width: 960px) {
 		display: block;
 		height: auto;
 		max-width: 750px;
+
 	}
 
 	@media (max-width: 768px) {
@@ -67,7 +68,7 @@ const Wrapper = styled.div`
 	}
 
 	@media (max-height: 600px) {
-		grid-template-rows: 500px 46px;
+		grid-template-rows: 500px 100px;
 		height: auto;
 	}
 	

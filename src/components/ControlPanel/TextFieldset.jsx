@@ -152,7 +152,7 @@ const Dropdown = styled.div`
 	${props =>
 		props.active &&
 		css`
-			max-height: 500px;
+			max-height: 900px;
 		`}
 `;
 
