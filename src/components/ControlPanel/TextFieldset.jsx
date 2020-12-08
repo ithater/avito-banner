@@ -53,7 +53,7 @@ function TextFieldset() {
 
 			<Dropdown active={!!bannerText}>
 				<Holder>
-					<Label htmlFor="bannerTextColor">Заливка баннера</Label>
+					<Label htmlFor="bannerTextColor">Цвет</Label>
 					<Input
 						type="color"
 						id="bannerTextColor"

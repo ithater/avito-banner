@@ -69,7 +69,6 @@ function BannerPreview(props) {
 		zIndex: '10',
 		width: '100%',
 		margin: '0',
-		color: 'white',
 		overflow: 'hidden',
 		fontFamily: 'sans-serif',
 	};
